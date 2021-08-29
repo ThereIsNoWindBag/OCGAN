@@ -2,7 +2,6 @@ import os
 import time
 import numpy as np
 import torchvision.utils as vutils
-import cv2
 from PIL import Image
 import matplotlib.pyplot as plt
 import visdom
@@ -19,7 +18,6 @@ class Visualizer():
         self.port = '8097'
         self.vis = visdom.Visdom(server=self.ip,port= self.port)
     
-
     @staticmethod
     def normalize(inp):
         return (inp-inp.min())/(inp.max() - inp.min() + 1e-5)

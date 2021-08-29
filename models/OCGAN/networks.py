@@ -7,11 +7,9 @@ import torch.nn.parallel
 import math
 
 import sys
-# sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(os.path.dirname(__file__)))))
 
 from custom_dataloader import load_data
 from option import Option
-
 
 class Encoder(nn.Module):
     """DCGAN ENCODER
@@ -50,7 +48,6 @@ class Encoder(nn.Module):
             nn.Tanh()
         )
 
-
     def forward(self, input):
         output = self.input_layer(input)
         # print(output.shape)
@@ -62,62 +59,11 @@ class Encoder(nn.Module):
         # print(output.shape)
         return output
 
-
-class Decoder_2( nn.Module):
-    """DCGAN DECODER
-
-    Args:
-        nn ([type]): [description]
-    """
-    def __init__(self, opt):
-        self.opt= opt
-        super(Decoder, self).__init__()
-        def convT(_in,_out):
-
-            layer = []
-            # layer.append(nn.Upsample(scale_factor=2, mode = 'nearest'))
-            layer.append(nn.ConvTranspose2d(_in,_out, 3,1,1))
-            layer.append(nn.BatchNorm2d(_out))
-            layer.append(nn.ReLU())
-
-            return layer
-
-        self.input_layer = nn.Sequential(
-            nn.ConvTranspose2d(opt.latent_dim, opt.ngf,3,1,0),
-            nn.ConvTranspose2d(opt.ngf, opt.ngf,3,1,0),
-            nn.BatchNorm2d(opt.ngf),
-            nn.ReLU()
-        )
-
-        self.main = nn.Sequential(
-            *convT(opt.ngf,opt.ngf*2),
-            *convT(opt.ngf*2,opt.ngf)
-        )
-    
-        self.last_layer = nn.Sequential(
-                            nn.ConvTranspose2d(opt.ngf, opt.ngf,4,2,1),
-                            nn.BatchNorm2d(opt.ngf),
-                            nn.ReLU(),
-                            nn.ConvTranspose2d(opt.ngf, opt.n_channels,4,2,1),
-                            nn.Sigmoid()
-                            )
-
-
-    def forward(self, input):
-        output = input.view(input.size(0),self.opt.latent_dim,3,3)
-        output = self.input_layer(output)
-        # print(output.shape)
-        output = self.main(output)
-        # print(output.shape)
-        output = self.last_layer(output)
-        return output
-
-
 class Decoder(nn.Module):
     """
     DCGAN DECODER NETWORK
     """
-    def __init__(self,opt):
+    def __init__(self, opt):
         super(Decoder, self).__init__()
         self.conv1 = nn.Upsample(scale_factor=2, mode='nearest')
         self.conv2 = nn.ConvTranspose2d(32, 32, 3, padding=3//2)
@@ -139,7 +85,7 @@ class Decoder(nn.Module):
 
     def forward(self, input):
         # print('l2_input:',input.size(0))
-        output = input.view(input.size(0),32,3,3)
+        output = input.view(input.size(0), 32, 3, 3)
         # print('l2_reshape:',output.shape)
         output = self.conv1(output) 
         # print('l2_output1:',output.shape)
@@ -310,5 +256,3 @@ if __name__ == '__main__':
         output = dec(output)
         print(output.shape)
         exit()
-
-

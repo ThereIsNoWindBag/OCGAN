@@ -25,12 +25,8 @@ class Option:
         self.opt.add_argument("--dataset",type=str, default='MNIST',help='dataset name')
         self.opt.add_argument("--workers",type=int,default=4, help="number of workers")
 
-
         #path
         self.opt.add_argument("--weight_path",type=str,default= './result/weight/',help='weight file path')
 
-        #Visdom parameter
-        # self.opt.add_argument("")
-    
     def parse(self):
         return self.opt.parse_args()
