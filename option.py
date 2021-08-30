@@ -3,8 +3,8 @@ import argparse
 
 class Option:
     def __init__(self):
-        
         self.opt = argparse.ArgumentParser()
+        
         #train parameter
         self.opt.add_argument("--n_epochs",type =int, default =700, help='number of epochs of training')
         self.opt.add_argument("--batchsize",type = int, default= 64, help='number of batchsize')

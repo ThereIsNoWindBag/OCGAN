@@ -2,7 +2,6 @@ import os
 import numpy as np
 import torch
 from torch.utils.data import DataLoader
-import torchvision.datasets as datasets
 from torchvision.datasets import MNIST
 import torchvision.transforms as transforms
 
@@ -19,7 +18,7 @@ def load_data(opt, normal_classes, train=True, check=False):
     if opt.dataset == 'MNIST':
         dataset = MNIST(root='./data/', train=train, download=True, transform=transform)
 
-    normal_img, normal_lb, abnormal_img, abnormal_lb = get_mnist_anomaly(dataset.data, dataset.targets, normal_classes,'')
+    normal_img, normal_lb, abnormal_img, abnormal_lb = get_mnist_anomaly(dataset.data, dataset.targets, normal_classes)
 
     # 일단 train 전용으로
     # if check:
@@ -58,5 +57,3 @@ def get_mnist_anomaly(img, lbl, normal_c:list):
     abnormal_lbl[:] = 0
     
     return normal_img,normal_lbl, abnormal_img, abnormal_lbl
-
-

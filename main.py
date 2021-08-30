@@ -12,7 +12,10 @@ if __name__=='__main__':
     
     best_acc = 0.0 # best accuracy
 
-    for epoch in tqdm(range(opt.n_epochs),ncols=100):
+    for epoch in tqdm(range(opt.n_epochs), ncols=100):
         for inputs, labels in dataloader:
             model.set_input(inputs, labels)
             model.train()
+
+        if epoch % 10 == 0:
+            model.save_weight(epoch)
